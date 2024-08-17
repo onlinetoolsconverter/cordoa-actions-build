@@ -29,7 +29,7 @@ jobs:
 
       - name: Download and set up Android SDK
         run: |
-          mkdir -p $HOME/android-sdk
+          mkdir -p $HOME/android-sdk/cmdline-tools
           wget https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip -O $HOME/android-sdk/cmdline-tools.zip
           unzip $HOME/android-sdk/cmdline-tools.zip -d $HOME/android-sdk/cmdline-tools
           mkdir -p $HOME/android-sdk/cmdline-tools/latest
@@ -39,12 +39,18 @@ jobs:
           echo "export ANDROID_SDK_ROOT=$HOME/android-sdk" >> $GITHUB_ENV
           echo "export PATH=$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$ANDROID_SDK_ROOT/platform-tools:$PATH" >> $GITHUB_ENV
           yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --licenses
+
+      - name: Install Required SDK Components
+        run: |
           $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager "platform-tools" "platforms;android-30" "build-tools;30.0.3"
+          # Debug output to verify installation
+          ls -l $ANDROID_SDK_ROOT/build-tools/
 
       - name: Verify Android SDK Installation
         run: |
           $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --list
-          ls $ANDROID_SDK_ROOT/build-tools/30.0.3/
+          ls -l $ANDROID_SDK_ROOT/build-tools/
+          ls -l $ANDROID_SDK_ROOT/platforms/
 
       - name: Install dependencies
         run: npm install
