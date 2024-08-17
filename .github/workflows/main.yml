@@ -39,23 +39,13 @@ jobs:
           echo "export ANDROID_SDK_ROOT=$HOME/android-sdk" >> $GITHUB_ENV
           echo "export PATH=$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$ANDROID_SDK_ROOT/platform-tools:$PATH" >> $GITHUB_ENV
           yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --licenses
-
-      - name: Install Required SDK Components
-        run: |
           $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager "platform-tools" "platforms;android-30" "build-tools;30.0.3"
-          # Debug output to verify installation
-          ls -l $ANDROID_SDK_ROOT/build-tools/
 
-      - name: Verify Android SDK Installation
-        run: |
-          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --list
-          ls -l $ANDROID_SDK_ROOT/build-tools/
-          ls -l $ANDROID_SDK_ROOT/platforms/
-
-      - name: Install dependencies
+      - name: Install Dependencies
         run: npm install
 
-      - name: Build Android
+      - name: Add Platform and Build
         run: |
           cordova platform add android
-          cordova build android --release -- --warning-mode=all --stacktrace --info
+          cordova plugin add cordova-plugin-admob-free@latest  # Ensure using an updated plugin version
+          cordova build android --release -- --stacktrace --info --debug
