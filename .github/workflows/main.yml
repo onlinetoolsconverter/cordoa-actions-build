@@ -36,14 +36,17 @@ jobs:
           mkdir -p $HOME/android-sdk/cmdline-tools/latest
           mv $HOME/android-sdk/cmdline-tools/cmdline-tools/* $HOME/android-sdk/cmdline-tools/latest
           export ANDROID_SDK_ROOT=$HOME/android-sdk
-          export PATH=$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$PATH
+          export PATH=$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$ANDROID_SDK_ROOT/platform-tools:$PATH
           yes | sdkmanager --licenses
           sdkmanager "platform-tools" "platforms;android-30" "build-tools;30.0.3"
+          
+      - name: List Installed SDK Components (Debugging)
+        run: sdkmanager --list
 
       - name: Install dependencies
         run: npm install
 
-      - name: Build Android
+      - name: Build Android (with Debugging)
         run: |
           cordova platform add android
-          cordova build android --release
+          cordova build android --release -- --warning-mode=all --stacktrace --info
