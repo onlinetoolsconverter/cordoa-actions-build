@@ -44,8 +44,12 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      - name: Add Platform and Build
+      - name: Remove Android Platform
+        run: cordova platform rm android || true
+
+      - name: Add Android Platform
+        run: cordova platform add android
+
+      - name: Build Android
         run: |
-          cordova platform add android
-          cordova plugin add cordova-plugin-admob-free@latest  # Ensure using an updated plugin version
           cordova build android --release -- --stacktrace --info --debug
