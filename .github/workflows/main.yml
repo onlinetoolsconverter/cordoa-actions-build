@@ -41,9 +41,6 @@ jobs:
           yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --licenses
           $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager "platform-tools" "platforms;android-30" "build-tools;30.0.3"
           
-      - name: List Installed SDK Components (Debugging)
-        run: sdkmanager --list
-      
       - name: Install dependencies
         run: npm install
 
